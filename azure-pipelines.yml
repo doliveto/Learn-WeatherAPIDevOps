@@ -1,9 +1,9 @@
 # Docker
-# Build a Docker image
+# Build a Docker image 
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+- master
 
 resources:
 - repo: self
@@ -14,17 +14,17 @@ variables:
 stages:
 - stage: Build
   displayName: Build image
-  jobs:
+  jobs:  
   - job: Build
     displayName: Build
     pool:
-      vmImage: ubuntu-latest
+      vmImage: 'ubuntu-latest'
     steps:
-- task: Docker@2
-  inputs:
-    containerRegistry: 'DockerHub'
-    repository: 'doliveto/weatherapi'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      $(tag)
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Binarythistle Docker Hub'
+        repository: 'binarythistle/weatherapi'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          $(tag)
