@@ -9,6 +9,16 @@ terraform {
   }
 }
 
+terraform {
+backend "azurerm" {
+  resource_group_name = "terraformpractice"
+  storage_account_name = "tfstatedoliveto"
+  container_name = "tfstate"
+  key = "terraform.tfstate"
+  
+}
+}
+
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
