@@ -1,27 +1,47 @@
-# We strongly recommend using the required_providers block to set the
-# Azure Provider source and version being used
+provider "azurerm" {
+    version = "2.5.0"
+    features {}
+}
+
 terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=2.46.0"
+    backend "azurerm" {
+        resource_group_name  = "terraformpractice"
+        storage_account_name = "tfstatedoliveto"
+        container_name       = "tfstate"
+        key                  = "terraform.tfstate"
     }
+}
+
+variable "imagebuild" {
+  type        = string
+  description = "Latest Image Build"
+}
+
+
+
+resource "azurerm_resource_group" "tf_test" {
+  name = "tfmainrg"
+  location = "Australia East"
+}
+
+resource "azurerm_container_group" "tfcg_test" {
+  name                      = "weatherapi"
+  location                  = azurerm_resource_group.tf_test.location
+  resource_group_name       = azurerm_resource_group.tf_test.name
+
+  ip_address_type     = "public"
+  dns_name_label      = "doliveto"
+  os_type             = "Linux"
+
+  container {
+      name            = "weatherapi"
+      image           = "doliveto/weatherapi:${var.imagebuild}"
+        cpu             = "1"
+        memory          = "1"
+
+        ports {
+            port        = 80
+            protocol    = "TCP"
+        }
   }
 }
-
-terraform {
-backend "azurerm" {
-  resource_group_name = "terraformpractice"
-  storage_account_name = "tfstatedoliveto"
-  container_name = "tfstate"
-  key = "terraform.tfstate"
-  
-}
-}
-
-# Configure the Microsoft Azure Provider
-provider "azurerm" {
-  features {}
-}
-
-# test
