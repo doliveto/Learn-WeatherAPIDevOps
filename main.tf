@@ -1,9 +1,12 @@
-provider "azurerm" {
-    version = "2.5.0"
-    features {}
-}
 
 terraform {
+    required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=2.46.0"
+    }
+  }
+    
     backend "azurerm" {
         resource_group_name  = "terraformpractice"
         storage_account_name = "tfstatedoliveto"
@@ -11,6 +14,12 @@ terraform {
         key                  = "terraform.tfstate"
     }
 }
+
+
+provider "azurerm" {
+    features {}
+}
+
 
 variable "imagebuild" {
   type        = string
